@@ -33,18 +33,18 @@ io.sockets.on('connection', function(socket){
     setInterval(function(){
 
         if(MoveReceived != null) {
-            
-            if (MoveReceived == "UP") {if(ball.getY() >= 15){ball.setY(ball.getY() - 50);}else{MoveReceived = "DOWN"}}
 
-            if (MoveReceived == "DOWN") {if(ball.getY() <= 3500){ ball.setY(ball.getY() + 50);}else{ MoveReceived = "UP"}}
+            if (MoveReceived == "UP") {if(ball.getY() >= 15){ball.setY(ball.getY() - 25);}else{MoveReceived = "DOWN"}}
 
-            if (MoveReceived == "RIGHT") {if(ball.getX() <=  7300){ ball.setX(ball.getX() + 50);} else{ MoveReceived = "LEFT"}}
+            if (MoveReceived == "DOWN") {if(ball.getY() <= 3500){ ball.setY(ball.getY() + 25);}else{ MoveReceived = "UP"}}
 
-            if (MoveReceived == "LEFT") {if(ball.getX() >= 15){ball.setX(ball.getX() - 50);}else{MoveReceived = "RIGHT"}}
+            if (MoveReceived == "RIGHT") {if(ball.getX() <=  7300){ ball.setX(ball.getX() + 25);} else{ MoveReceived = "LEFT"}}
+
+            if (MoveReceived == "LEFT") {if(ball.getX() >= 15){ball.setX(ball.getX() - 25);}else{MoveReceived = "RIGHT"}}
 
             io.emit("BallPosition", ball.getX(), ball.getY());
         }
-    }, 50);
+    }, 25);
 
 });
 
