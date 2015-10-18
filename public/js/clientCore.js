@@ -53,16 +53,16 @@ $(document).ready(function() {
             //MOVIMIENTOS
             canvas.Input.keyDown(Input.Left, function() {
                 console.log("aaa iz");
-                socket.emit("ClientsMove", "KEYLEFT");
+                socket.emit("ClientsMove", "LEFT");
             });
             canvas.Input.keyDown(Input.Right, function() {
-                socket.emit("ClientsMove", "KEYRIGHT");
+                socket.emit("ClientsMove", "RIGHT");
             });
             canvas.Input.keyDown(Input.Up, function() {
-                socket.emit("ClientsMove", "KEYUP");
+                socket.emit("ClientsMove", "UP");
             });
             canvas.Input.keyDown(Input.Bottom, function() {
-                socket.emit("ClientsMove", "KEYDOWN");
+                socket.emit("ClientsMove", "DOWN");
             });
 
             socket.on("BallPosition", function(currentX, currentY){

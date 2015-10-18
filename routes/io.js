@@ -2,7 +2,9 @@
 var io = require('socket.io')();
 Ball = require("./Ball").Ball;
 
-ball = new Ball(0,0);
+ball = new Ball(15,15);
+
+var MoveReceived = null;
 
 
 
@@ -17,34 +19,31 @@ io.sockets.on('connection', function(socket){
     socket.on('NewPlayer', function(clientID){
         console.log("NUEVO JUGADOR. LISTA ACTUALIZADA");
         console.log(clientID);
-        console.log("Posicion de la bola para el nuevo jugador "+ ball.getX() +" - "+ ball.getY());
         io.emit("BallPosition", ball.getX(),ball.getY());
 
     });
 
     //MOVIMIENTO
     socket.on("ClientsMove", function(motion){
-        if(motion == "KEYUP"){
-            ball.setY(ball.getY() - 25);
-        }
-        else if(motion == "KEYDOWN"){
-            ball.setY(ball.getY() + 25);
-        }
-        else if(motion == "KEYLEFT"){
-            ball.setX(ball.getX() - 25);
-        }
-        else if(motion == "KEYRIGHT"){
-            ball.setX(ball.getX() + 25);
-        }
-        io.emit("BallPosition", ball.getX(),ball.getY());
-
+        console.log("Recibido: " + motion);
+        MoveReceived = motion;
     });
 
 
     setInterval(function(){
-        ball.setX(ball.getX() + 5);
-        ball.setY(ball.getY() + 5);
-        io.emit("BallPosition", ball.getX(),ball.getY());
+
+        if(MoveReceived != null) {
+            
+            if (MoveReceived == "UP") {if(ball.getY() >= 15){ball.setY(ball.getY() - 50);}else{MoveReceived = "DOWN"}}
+
+            if (MoveReceived == "DOWN") {if(ball.getY() <= 3500){ ball.setY(ball.getY() + 50);}else{ MoveReceived = "UP"}}
+
+            if (MoveReceived == "RIGHT") {if(ball.getX() <=  7300){ ball.setX(ball.getX() + 50);} else{ MoveReceived = "LEFT"}}
+
+            if (MoveReceived == "LEFT") {if(ball.getX() >= 15){ball.setX(ball.getX() - 50);}else{MoveReceived = "RIGHT"}}
+
+            io.emit("BallPosition", ball.getX(), ball.getY());
+        }
     }, 50);
 
 });
