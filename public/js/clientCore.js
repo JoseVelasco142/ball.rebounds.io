@@ -44,31 +44,34 @@ $(document).ready(function() {
             this.background.drawImage("background");
             stage.append(this.background);
 
-            //NUEVO JUGADOR
+
+            //NUEVO JUGADOR(CREA UNA BOLA COMO ELEMNTO SIN AÑADIRLA)
             this.bola = this.createElement();
             this.bola.drawImage("bola");
             this.bola.scaleTo(0.15);
-            socket.emit("NewPlayer", socket.id); //EMITE QUE SE HA CONECTADO
+            socket.emit("NewPlayer", socket.id); //AVISA AL SERVER QUE SE HA CONECTADO Y LE ENVIA SU ID
+
+
+            // RECIBE POSICION DE LA BOLA
+            socket.on("BallPosition", function(currentX, currentY){
+                scene.bola.x = currentX;  //LE ASIGNA LA X RECIBIDA AL OBJETO LOCAL
+                scene.bola.y= currentY;   //LE ASIGNA LA Y RECIBIDA AL OBJETO LOCAL
+                stage.append(scene.bola); //PINTA LA BOLA
+            });
+
 
             //MOVIMIENTOS
             canvas.Input.keyDown(Input.Left, function() {
-                console.log("aaa iz");
-                socket.emit("ClientsMove", "LEFT");
+                socket.emit("ClientsMove", "LEFT");     //EMITE LEFT
             });
             canvas.Input.keyDown(Input.Right, function() {
-                socket.emit("ClientsMove", "RIGHT");
+                socket.emit("ClientsMove", "RIGHT");    //EMITE RIGHT
             });
             canvas.Input.keyDown(Input.Up, function() {
-                socket.emit("ClientsMove", "UP");
+                socket.emit("ClientsMove", "UP");       //EMITE UP
             });
             canvas.Input.keyDown(Input.Bottom, function() {
-                socket.emit("ClientsMove", "DOWN");
-            });
-
-            socket.on("BallPosition", function(currentX, currentY){
-                scene.bola.x = currentX;
-                scene.bola.y= currentY;
-                stage.append(scene.bola);
+                socket.emit("ClientsMove", "DOWN");     //EMITE DOWN
             });
 
         },
