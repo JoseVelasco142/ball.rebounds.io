@@ -40,6 +40,13 @@ io.sockets.on('connection', function(socket){
 
     });
 
+
+    setInterval(function(){
+        ball.setX(ball.getX() + 5);
+        ball.setY(ball.getY() + 5);
+        io.emit("BallPosition", ball.getX(),ball.getY());
+    }, 50);
+
 });
 
 module.exports = io;
